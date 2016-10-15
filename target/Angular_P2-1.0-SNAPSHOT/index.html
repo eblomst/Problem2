@@ -1,0 +1,100 @@
+
+<!DOCTYPE html>
+<html >
+    <head lang="en">
+        <meta charset="UTF-8">
+        <title>{{ctrl.title}}</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular.min.js"></script>
+        <script src="https://code.angularjs.org/1.4.7/i18n/angular-locale_da.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.8/angular-route.min.js"
+        type="text/javascript"></script>
+        <script src="js/app.js"></script>
+    </head>
+    <body ng-app="DemoApp" ng-controller="EditAddCarController as ectrl">
+        
+         <nav class="navbar navbar-default" role="navigation">
+            <div class="container">
+                <div >
+                    <ul class="nav navbar-nav">
+                        <li><a href="#/">All Cars</a></li>
+                        <li><a href="#/AddCar">Add new car</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <div ng-controller="ViewCarController as ctrl">
+            <div ng-view>
+            </div>
+      </div>
+       
+        
+        
+            <script type="text/ng-template" id="all.html">
+            
+            <h1>{{ctrl.title}}</h1>
+            <h2>Number of cars: {{ctrl.cars.lenght}}</h2>
+            <input type="search" ng-model="carfilter" placeholder="Filter cars">
+
+
+            <div>
+                <div class="col-md-9">
+                    <table class="table">
+                        <thead >
+                            <tr>
+                                <td>ID</td>
+                                <td><a href="" ng-click="ctrl.predicate = 'year'; ctrl.reverse = !ctrl.reverse">Year</a></td>
+                                <td><a href="" ng-click="ctrl.predicate = 'registered'; ctrl.reverse = !ctrl.reverse">Registered</a></td>
+                                <td><a href="" ng-click="ctrl.predicate = 'make'; ctrl.reverse = !ctrl.reverse">Make</a></td>
+                                <td><a href="" ng-click="ctrl.predicate = 'model'; ctrl.reverse = !ctrl.reverse">Model</a></td>
+                                <td><a href="" ng-click="ctrl.predicate = 'description'; ctrl.reverse = !ctrl.reverse">Description</a></td>
+                                <td><a href="" ng-click="ctrl.predicate = 'price'; ctrl.reverse = !ctrl.reverse">Price</a></td>
+                                <td><a>Action</a></td>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr  ng-repeat="car in ctrl.cars| filter: carfilter | orderBy:ctrl.predicate:ctrl.reverse">
+                                <td>{{car.id}}</td>
+                                <td>{{car.year}}</td>
+                                <td>{{car.registered| date }}</td>
+                                <td>{{car.make}}</td>
+                                <td>{{car.model}}</td>
+                                <td>{{car.description}}</td>
+                                <td>{{car.price| currency}}</td>
+                                <td>
+                                    <a href="#/AddCar" ng-click="ectrl.edit(car.id)">edit</a> |
+                                    <a href="#/"  ng-click="ectrl.deleteCar(car.id)">delete</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <h4>Sort Column: {{ctrl.predicate}}</h4>
+                    <h4>Reverse: {{ctrl.reverse}}</h4>
+            </script>        
+               
+<script type="text/ng-template" id="addEdit.html">
+                <div class="col-md-3" style="border: thin lightblue solid; border-radius: 5px;padding: 1em;">
+
+                    <form class="well" style="font-size: small">
+                        <label>Year</label>
+                        <input type="text" name="year" ng-model="ectrl.newcar.year"/>
+                        <label>Registered</label>
+                        <input type="text" name="registered" ng-model="ectrl.newcar.registered"/>
+                        <label>Make</label>
+                        <input type="text" name="make" ng-model="ectrl.newcar.make"/>
+                        <label>Model</label>
+                        <input type="text" name="model" ng-model="ectrl.newcar.model"/>
+                        <label>Description</label>
+                        <input type="text" name="description" ng-model="ectrl.newcar.description"/>
+                        <label>Price</label>
+                        <input type="text" name="price" ng-model="ectrl.newcar.price"/>
+                        <br/>
+                        <input type="hidden" ng-model="ectrl.newcar.id" />
+                        <input type="button" value="Save" ng-click="ectrl.add()" class="btn btn-primary"/>
+                    </form>
+                </div>
+        </script>
+          
+    </body>
+</html>
